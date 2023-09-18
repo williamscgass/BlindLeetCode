@@ -7,7 +7,6 @@ import os
 import json
 import multiprocessing as mp
 
-
 # retrieves all problems from link by getting all HTML <a> tags
 # and keeping ones with "leetcode.com/problems/" in the href
 def getAllProblemsFromRootLink(link):
@@ -28,13 +27,12 @@ def getAllProblemsFromRootLink(link):
     soup = BeautifulSoup(page, 'html.parser')
     allLinks = soup.find_all('a')
 
-    problems = ["https://leetcode.com" + str(link.get('href')) for link in allLinks if "/problems/" in str(link.get('href'))]
+    problems = ["https://leetcode.com" + str(link.get('href')).replace("/editorial", "/description") for link in allLinks if "/problems/" in str(link.get('href'))]
     return problems
 
 @click.group()
 def blind():
     pass
-
 
 @click.command()
 @click.argument('--seed', default=random.randint(0, 100000))
@@ -69,7 +67,7 @@ def init(__seed, __constructor, __name):
         if len(splitBySlash) < 4 or splitBySlash[3] in seenProblems:
             return
         
-        seenProblems.add(splitBySlash[2])
+        seenProblems.add(splitBySlash[3])
         uniqueProblems.append(problem)
 
     for problem in allProblemLinks:
