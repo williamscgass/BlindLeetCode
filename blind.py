@@ -39,6 +39,7 @@ def blind():
 @click.argument('--constructor', default=os.path.join(os.getcwd(), '.default.json'))
 @click.argument('--name', default='blind')
 def init(__seed, __constructor, __name):
+    print(__seed)
     # reads in links from constructor file and gets all problems from each link
     if not os.path.isfile(__constructor):
         raise Exception("Constructor file not found")
@@ -64,10 +65,10 @@ def init(__seed, __constructor, __name):
     seenProblems = set()
     def filterUniqueProblems(problem):
         splitBySlash = problem.split('/')
-        if len(splitBySlash) < 4 or splitBySlash[3] in seenProblems:
+        if len(splitBySlash) < 5 or splitBySlash[4] in seenProblems:
             return
         
-        seenProblems.add(splitBySlash[3])
+        seenProblems.add(splitBySlash[4])
         uniqueProblems.append(problem)
 
     for problem in allProblemLinks:
