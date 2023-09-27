@@ -39,7 +39,6 @@ def blind():
 @click.argument('--constructor', default=os.path.join(os.getcwd(), '.default.json'))
 @click.argument('--name', default='blind')
 def init(__seed, __constructor, __name):
-    print(__seed)
     # reads in links from constructor file and gets all problems from each link
     if not os.path.isfile(__constructor):
         raise Exception("Constructor file not found")
@@ -99,6 +98,9 @@ def next(__name):
 
     # randomizes the order of problems
     random.seed(state["seed"])
+    for i in range(len(state["finishedProblems"])): # actually randomize
+        skip = random.choice(state["unfinishedProblems"])
+
     problem = random.choice(state["unfinishedProblems"])
     state["unfinishedProblems"].remove(problem)
     state["finishedProblems"].append(problem)
